@@ -1,0 +1,13 @@
+import express from 'express';
+import cors from 'cors';
+import { createClient } from '@supabase/supabase-js';
+import dotenv from 'dotenv';
+dotenv.config();
+const app = express();
+app.use(cors());
+app.use(express.json());
+const supabase = process.env.SUPABASE_URL ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY) : null;
+app.get('/', (req,res)=> res.send(`<h1>Paris Express 🚀</h1><p>Deploy OK - Supabase: ${supabase?'OK':'en attente'}</p>`));
+app.get('/api/health', (req,res)=> res.json({status:'ok'}));
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, ()=> console.log('Running'));
